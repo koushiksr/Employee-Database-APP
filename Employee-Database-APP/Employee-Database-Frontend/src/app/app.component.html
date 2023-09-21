@@ -1,0 +1,285 @@
+<main>
+  <nav class="headingandbuttons">
+    <h1 class="mainHeading">Employee Database</h1>
+    <div class="headbuttons">
+      <ul class="pagination justify-content-end">
+        <li class="page-item">
+          <a class="page-link" (click)="previousPage()" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a id="page-link1" (click)="midPage1()"> <span aria-hidden="true"></span>
+          </a></li>
+        <li class="page-item"><a id="page-link2" (click)="midPage2()"></a></li>
+        <li class="page-item"><a id="page-link3" (click)="midPage3()"></a></li>
+        <li class="page-item">
+          <a class="page-link" (click)="nextPage()" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+      <div class="topbuttondiv">
+        <button class="buttontop" (click)="openPopup()">Search</button>
+        <button class="buttontop" (click)="PopUpOfAddEmployee()">Add </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- </div> -->
+  <div>
+    <div class="popupAddEmp EmpPopUpackground-content  employee-form" [class.active]="isPopUpOfAddEmployee">
+      <div class="AddEmployeeHeader">
+        <h1 class="subHeding">Add Employee</h1>
+        <button class="closeButtonForAdd" [class.active]="isPopUpOfAddEmployee"
+          (click)="closePopUpOfAddEmployee()">Close</button>
+      </div>
+      <form #employeeForm="ngForm" (submit)="decisionForCreateAndUpdate(employeeForm.value)">
+
+        <div class="form-group">
+          <input type="text" id="firstName" name="firstName" [(ngModel)]="newEmployee.firstName"
+            placeholder="First name*" required />
+        </div>
+        <div class="form-group">
+          <input type="text" id="lastName" name="lastName" [(ngModel)]="newEmployee.lastName" placeholder="Last name"
+            required />
+        </div>
+
+        <div class="form-group gmail">
+          <input type="email" id="email" name="email" [(ngModel)]="newEmployee.email" placeholder="Email*" required />
+          <i class="uil uil-envelope uil-check-circle email-icon"></i>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="position" name="position" [(ngModel)]="newEmployee.position" placeholder="Position"
+            required />
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="department" name="department" [(ngModel)]="newEmployee.department"
+            placeholder="Department*" required />
+        </div>
+
+        <div class="form-group">
+          <input type="number" id="salary" name="salary" [(ngModel)]="newEmployee.salary" placeholder="Salary*"
+            required />
+        </div>
+
+        <div class="form-group">
+          <input type="date" id="joiningDate" name="joiningDate" [(ngModel)]="newEmployee.joiningDate"
+            placeholder="Joining Date" />
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="experience" name="experience" [(ngModel)]="newEmployee.experience"
+            placeholder="Experience" />
+        </div>
+
+
+        <div class="button-group">
+          <div class="center-buttons">
+            <button id="edit" type="submit">
+              {{ editMood ? "Update Employee" : "Add Employee" }}
+            </button>
+            <button type="button" (click)="clearForm()">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <!-- </div> -->
+  <div id="output" class="custom-style"></div>
+  <div class="datacontainer">
+    <div class="listAndTable">
+      <div class="listButtons">
+        <nav aria-label="Page navigation example">
+          <!-- <ul class="pagination justify-content-end">
+            <li class="page-item">
+              <a class="page-link" (click)="previousPage()" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li class="page-item"><a id="page-link1" (click)="midPage1()"> <span aria-hidden="true"></span>
+              </a></li>
+            <li class="page-item"><a id="page-link2" (click)="midPage2()"></a></li>
+            <li class="page-item"><a id="page-link3" (click)="midPage3()"></a></li>
+            <li class="page-item">
+              <a class="page-link" (click)="nextPage()" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul> -->
+        </nav>
+      </div>
+      <table class="employee-table ">
+
+        <div class="popup background-content" [class.active]="isPopupOpen">
+
+          <div class="popup-content">
+            <h2>Search Employee </h2>
+            <button id="closeButton" (click)="closePopup()">Close</button>
+            <div>
+              <label for="searchCriteria">Search by:</label>
+              <select id="searchCriteria" [(ngModel)]="selectedSearchCriteria">
+                <option value="email">Email</option>
+                <option value="joiningDate">joiningDate</option>
+                <option value="employeeId">Employee id</option>
+                <option value="firstName">First Name</option>
+                <option value="lastName">Last Name</option>
+                <option value="position">Position</option>
+                <option value="department">Department</option>
+                <option value="createdDate">createdDate</option>
+              </select>
+            </div>
+            <div>
+              <input type="text" [placeholder]="selectedSearchCriteria" id="searchText" [(ngModel)]="searchText"
+                (input)="searchAndUpdate()">
+            </div>
+          </div>
+
+          <div class="search-results scrollable-content">
+            <div class="search-result">
+              <table>
+                <thead>
+                  <tr>
+                    <th>employeeId</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Email</th>
+                    <th>Position</th>
+                    <th>Department</th>
+                    <th>Salary</th>
+                    <th>Joining Date</th>
+                    <th>Experience</th>
+                    <th>Created Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let result of searchResults">
+                    <td>{{ result.employeeId }}</td>
+                    <td>{{ result.firstName }}</td>
+                    <td>{{ result.lastName }}</td>
+                    <td>{{ result.email }}</td>
+                    <td>{{ result.position }}</td>
+                    <td>{{ result.department }}</td>
+                    <td>{{ result.salary }}</td>
+                    <td>{{ result.joiningDate }}</td>
+                    <td>{{ result.experience }}</td>
+                    <td>{{ result.createdDate }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+
+        <tr>
+          <th (click)="sortByColumn('employeeId')" [ngClass]="{'sorted': sortBy === 'employeeId'}">
+            Employee ID
+            <span class="sort-icon">
+              {{ sortBy === 'employeeId' && sortDirection === 'asc' ? '▲' : sortBy === 'employeeId' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('firstName')" [ngClass]="{'sorted': sortBy === 'firstName'}">
+            First name
+            <span class="sort-icon">
+              {{ sortBy === 'firstName' && sortDirection === 'asc' ? '▲' : sortBy === 'firstName' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('lastName')" [ngClass]="{'sorted': sortBy === 'lastName'}">
+            Last name
+            <span class="sort-icon">
+              {{ sortBy === 'lastName' && sortDirection === 'asc' ? '▲' : sortBy === 'lastName' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('email')" [ngClass]="{'sorted': sortBy === 'email'}">
+            Email
+            <span class="sort-icon">
+              {{ sortBy === 'email' && sortDirection === 'asc' ? '▲' : sortBy === 'email' && sortDirection === 'desc' ?
+              '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('position')" [ngClass]="{'sorted': sortBy === 'position'}">
+            Position
+            <span class="sort-icon">
+              {{ sortBy === 'position' && sortDirection === 'asc' ? '▲' : sortBy === 'position' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('department')" [ngClass]="{'sorted': sortBy === 'department'}">
+            Department
+            <span class="sort-icon">
+              {{ sortBy === 'department' && sortDirection === 'asc' ? '▲' : sortBy === 'department' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('salary')" [ngClass]="{'sorted': sortBy === 'salary'}">
+            Salary
+            <span class="sort-icon">
+              {{ sortBy === 'salary' && sortDirection === 'asc' ? '▲' : sortBy === 'salary' && sortDirection === 'desc'
+              ?
+              '▼' : '' }}
+            </span>
+          </th>
+
+
+          <th (click)="sortByColumn('joiningDate')" [ngClass]="{'sorted': sortBy === 'joiningDate'}">
+            Joining Date
+            <span class="sort-icon">
+              {{ sortBy === 'joiningDate' && sortDirection === 'asc' ? '▲' : sortBy === 'joiningDate' && sortDirection
+              ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('experience')" [ngClass]="{'sorted': sortBy === 'experience'}">
+            Experience
+            <span class="sort-icon">
+              {{ sortBy === 'experience' && sortDirection === 'asc' ? '▲' : sortBy === 'experience' && sortDirection ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+
+          <th (click)="sortByColumn('createdDate')" [ngClass]="{'sorted': sortBy === 'createdDate'}">
+            createdDate
+            <span class="sort-icon">
+              {{ sortBy === 'experience' && sortDirection === 'asc' ? '▲' : sortBy === 'createdDate' && sortDirection
+              ===
+              'desc' ? '▼' : '' }}
+            </span>
+          </th>
+          <th>Actions</th>
+        </tr>
+        <tr *ngFor="let employee of employees">
+          <td>{{ employee.employeeId }}</td>
+          <td>{{ employee.firstName }}</td>
+          <td>{{ employee.lastName }}</td>
+          <td>{{ employee.email }}</td>
+          <td>{{ employee.position }}</td>
+          <td>{{ employee.department }}</td>
+          <td>{{ employee.salary }}</td>
+          <td>{{ employee.joiningDate }}</td>
+          <td>{{ employee.experience }}</td>
+          <td>{{ employee.createdDate }}</td>
+          <td class="actions">
+            <button class="actionbuttons" (click)="PopUpOfEditEmployee(employee.email)">Edit</button>
+            <button class="actionbuttons" (click)="deleteEmployee(employee.email)">Delete</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2023 EmployeeDB</p>
+</footer>

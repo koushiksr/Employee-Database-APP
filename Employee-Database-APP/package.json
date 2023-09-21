@@ -1,0 +1,20 @@
+{
+  "name": "employeedatabaseapp",
+  "version": "1.0.0",
+  "description": "this json for run both frontend and backend at a time",
+  "main": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm-run-all -p start:backend start:frontend",
+    "start:backend": "cd  Employee-Database-Backend && npm start",
+    "start:frontend": "cd  Employee-Database-Frontend && npm start"
+  },
+  "author": "koushik_medala",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  },
+  "dependencies": {
+    "font-awesome": "^4.7.0"
+  }
+}

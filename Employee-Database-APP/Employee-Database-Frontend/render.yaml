@@ -1,0 +1,17 @@
+services:
+  - name: web
+    type: web
+    buildCommand: npm run build
+    publishDir: ./dist
+    startCommand: npm start
+    env:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 18.17.1 
+      - key: NG_CLI_VERSION
+        value: 16.2.0
+    healthCheckPath: /health
+    routes:
+      - path: /*
+        healthCheck: true
